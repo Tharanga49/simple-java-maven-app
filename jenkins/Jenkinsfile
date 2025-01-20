@@ -5,6 +5,19 @@ pipeline {
             args '-v /root/.m2:/root/.m2'
         }
     }
+    environment {
+        GITHUB_CREDENTIALS = 'a1c4e262-6cc1-4313-9f81-16863ac71a13' // The ID of the credentials in Jenkins
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Use the credentials to clone the repo
+                    git credentialsId: GITHUB_CREDENTIALS, url: 'https://github.com/Tharanga49/simple-java-maven-app'
+                }
+            }
+        }
+    }
     stages {
         stage('Build') {
             steps {
