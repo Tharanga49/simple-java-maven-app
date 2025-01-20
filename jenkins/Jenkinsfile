@@ -2,19 +2,16 @@ pipeline {
     agent {
         docker {
             image 'maven:3.9.0'
-            args '-v /root/.m2:/root/.m2'
+            args '-v /root/.m2:/root/.m2'  // Ensure the volume path is correct based on your OS
         }
     }
-    environment {
-        GITHUB_CREDENTIALS = 'a1c4e262-6cc1-4313-9f81-16863ac71a13' // The ID of the credentials in Jenkins
+    tools {
+        git 'Tharanga49'  // Use the Git installation named 'Tharanga49'
     }
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    // Use the credentials to clone the repo
-                    git credentialsId: GITHUB_CREDENTIALS, url: 'https://github.com/Tharanga49/simple-java-maven-app'
-                }
+                checkout scm  // This will checkout the code using the configured Git tool
             }
         }
         stage('Build') {
@@ -34,7 +31,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-               sh './jenkins/scripts/deliver.sh'
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
