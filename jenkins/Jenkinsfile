@@ -1,28 +1,14 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.0'
-            args '-v /root/.m2:/root/.m2' // Ensure the volume path is correct based on your OS
-            
-        }
-    }
-    tools {
-        git 'Tharanga49'  // Use the Git installation named 'Tharanga49'
-    }
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm  // This will checkout the code using the configured Git tool
-            }
-        }
+    agent any {
+        
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                bat 'mvn -B -DskipTests clean package'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
             post {
                 always {
@@ -32,7 +18,7 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                bat '"C:\\Program Files\\Git\\bin\\bash.exe" -c "sh ./jenkins/scripts/deliver.sh"'
             }
         }
     }
